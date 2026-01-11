@@ -1,4 +1,4 @@
-import ExploreBtn from "./components/exploreBtn"
+import ExploreBtn from "./components/explore-btn"
 
 const Page = () => {
   return (
