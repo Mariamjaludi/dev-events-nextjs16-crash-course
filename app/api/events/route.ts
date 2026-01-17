@@ -30,12 +30,39 @@ export async function POST(req: NextRequest) {
       }).end(buffer)
     })
 
-    event.image = (uploadResult as { secure_url: string }).secure_url
+    const eventData = {
+      title: event.title,
+      description: event.description,
+      overview: event.overview,
+      image: (uploadResult as { secure_url: string }).secure_url,
+      venue: event.venue,
+      location: event.location,
+      date: event.date,
+      time: event.time,
+      mode: event.mode,
+      audience: event.audience,
+      agenda: event.agenda,
+      organizer: event.organizer,
+      tags: event.tags
+    }
 
-    const createdEvent = await Event.create(event)
+    const createdEvent = await Event.create(eventData)
     return NextResponse.json({ message: 'Event created successfully', event: createdEvent }, { status: 201 })
   } catch(e) {
     console.log(e)
     return NextResponse.json({ message: 'Event Creation Failed', error: e instanceof Error ? e.message : "Unknown" }, { status: 500 })
+  }
+}
+
+export async function GET() {
+  try {
+    connectDB()
+
+    const events = await Event.find().sort({ createdAt: -1 })
+
+    return NextResponse.json({ message: 'Event list fetched successfully', events }, { status: 200 })
+
+  } catch(e) {
+    NextResponse.json({ message: "Event fetching failed", error: e }, { status: 500 })
   }
 }
