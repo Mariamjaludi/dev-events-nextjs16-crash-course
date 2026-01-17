@@ -52,8 +52,8 @@ BookingSchema.pre('save', async function () {
   }
 })
 
-// Index on eventId for faster queries when looking up bookings by event
-BookingSchema.index({ eventId: 1 })
+// Unique compound index: enforces one booking per event per email
+BookingSchema.index({ eventId: 1, email: 1 }, { unique: true })
 
 // Index on email for faster user booking lookups
 BookingSchema.index({ email: 1 })
