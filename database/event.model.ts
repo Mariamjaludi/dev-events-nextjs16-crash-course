@@ -163,9 +163,6 @@ EventSchema.pre('save', function () {
   }
 })
 
-// Create unique index on slug for faster queries and uniqueness constraint
-EventSchema.index({ slug: 1 }, { unique: true })
-
 // Export the Event model, reusing existing model in development to avoid recompilation errors
 const Event = models.Event || model<IEvent>('Event', EventSchema)
 
